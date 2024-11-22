@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "https://your-api-url.com/api",
+      "REACT_APP_WS_URL": "wss://your-api-url.com/ws"
+    }
+  }
+}
