@@ -1,16 +1,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { auth } from '../services/api';
-import { User, AuthContextType } from '../types/user';
+import { User } from '../types/user';
 
-const AuthContext = createContext<AuthContextType | null>(null);
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
+  logout: () => void;
+  updateUser: (data: Partial<User>) => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const initializeAuth = async () => {
+    const initAuth = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -24,72 +32,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     };
 
-    initializeAuth();
+    initAuth();
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      const response = await auth.login(email, password);
-      localStorage.setItem('token', response.token);
-      setUser(response.user);
-      setError(null);
-    } catch (error: any) {
-      setError(error.response?.data?.message || '로그인 중 오류가 발생했습니다.');
-      throw error;
-    }
+    const { token, user: userData } = await auth.login(email, password);
+    localStorage.setItem('token', token);
+    setUser(userData);
   };
 
   const register = async (name: string, email: string, password: string) => {
-    try {
-      const response = await auth.register(name, email, password);
-      localStorage.setItem('token', response.token);
-      setUser(response.user);
-      setError(null);
-    } catch (error: any) {
-      setError(error.response?.data?.message || '회원가입 중 오류가 발생했습니다.');
-      throw error;
-    }
+    const { token, user: userData } = await auth.register(name, email, password);
+    localStorage.setItem('token', token);
+    setUser(userData);
   };
 
   const logout = async () => {
     try {
       await auth.logout();
+    } finally {
       localStorage.removeItem('token');
       setUser(null);
-      setError(null);
-    } catch (error: any) {
-      setError(error.response?.data?.message || '로그아웃 중 오류가 발생했습니다.');
-      throw error;
     }
   };
 
-  const updateProfile = async (data: Partial<User>) => {
-    try {
-      const updatedUser = await auth.update(data);
-      setUser(updatedUser);
-      setError(null);
-    } catch (error: any) {
-      setError(error.response?.data?.message || '프로필 수정 중 오류가 발생했습니다.');
-      throw error;
-    }
+  const updateUser = async (data: Partial<User>) => {
+    const updatedUser = await auth.update(data);
+    setUser(updatedUser);
   };
 
-  const value = {
-    user,
-    loading,
-    error,
-    login,
-    register,
-    logout,
-    updateProfile,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
