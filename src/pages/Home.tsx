@@ -23,7 +23,10 @@ const mockTools: Tool[] = [
     id: '1',
     name: '텍스트 요약',
     description: '긴 텍스트를 핵심 내용만 간단하게 요약해주는 도구입니다.',
+    category: 'text',
     type: 'text',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     usageCount: 0,
     inputs: [{ name: 'text', type: 'text', required: true }],
   },
@@ -31,7 +34,10 @@ const mockTools: Tool[] = [
     id: '2',
     name: '이미지 생성',
     description: '텍스트 설명을 바탕으로 AI가 이미지를 생성해주는 도구입니다.',
+    category: 'image',
     type: 'image',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     usageCount: 0,
     inputs: [{ name: 'prompt', type: 'text', required: true }],
   },
@@ -39,7 +45,10 @@ const mockTools: Tool[] = [
     id: '3',
     name: '코드 리뷰',
     description: 'AI가 코드를 분석하고 개선점을 제안해주는 도구입니다.',
+    category: 'code',
     type: 'code',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     usageCount: 0,
     inputs: [{ name: 'code', type: 'code', required: true }],
   },
@@ -58,7 +67,9 @@ const Home: React.FC = () => {
       retryDelay: 1000,
       refetchOnWindowFocus: false,
       // 개발 모드에서는 에러 시 더미 데이터 사용
-      placeholderData: isDevelopment ? { tools: mockTools } : undefined,
+      placeholderData: isDevelopment
+        ? { tools: mockTools, total: mockTools.length, page: 1, limit: 6 }
+        : undefined,
     }
   );
 

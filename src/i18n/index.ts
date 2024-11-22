@@ -68,8 +68,12 @@ i18n
     resources,
     fallbackLng: 'ko',
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
+    debug: true,
+    react: {
+      useSuspense: false,
+    },
   });
 
 export default i18n;

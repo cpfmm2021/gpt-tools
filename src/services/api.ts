@@ -59,19 +59,19 @@ export const tools = {
   delete: (id: string) => api.delete(`/tools/${id}`).then((res) => res.data),
   execute: (id: string, data: any) =>
     api.post(`/tools/${id}/execute`, data).then((res) => res.data),
+  run: (id: string, input: Record<string, any>) =>
+    api.post(`/tools/${id}/run`, input).then((res) => res.data),
 };
 
 export const admin = {
   getStats: () => api.get('/admin/stats').then((res) => res.data),
-  getSystemStatus: () => api.get('/admin/system').then((res) => res.data),
+  getSystemStatus: () => api.get('/admin/status').then((res) => res.data),
   getSettings: () => api.get('/admin/settings').then((res) => res.data),
   updateSettings: (data: any) =>
     api.put('/admin/settings', data).then((res) => res.data),
-  getLogs: (params?: { page?: number; limit?: number; level?: string }) =>
+  getLogs: (params?: { page?: number; limit?: number; search?: string }) =>
     api.get('/admin/logs', { params }).then((res) => res.data),
-  downloadLogs: (params?: { startDate?: string; endDate?: string }) =>
-    api.get('/admin/logs/download', { params }).then((res) => res.data),
-  deleteLogs: (params?: { before?: string }) =>
+  deleteLogs: (params: { before: string }) =>
     api.delete('/admin/logs', { params }).then((res) => res.data),
   getUsers: (params?: { page?: number; limit?: number; search?: string }) =>
     api.get('/admin/users', { params }).then((res) => res.data),
@@ -83,6 +83,7 @@ export const admin = {
     api.post(`/admin/users/${id}/block`).then((res) => res.data),
   unblockUser: (id: string) =>
     api.post(`/admin/users/${id}/unblock`).then((res) => res.data),
+  getRecentActivity: () => api.get('/admin/activity').then((res) => res.data),
 };
 
 export const user = {

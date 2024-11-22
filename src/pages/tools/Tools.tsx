@@ -32,16 +32,6 @@ import { tools } from '../../services/api';
 import { Tool, ToolsResponse } from '../../types/tool';
 import { useAuth } from '../../contexts/AuthContext';
 
-interface Tool {
-  id: string;
-  name: string;
-  description: string;
-  type: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-}
-
 const Tools: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
