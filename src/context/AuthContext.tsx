@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User } from '../types';
 import { auth } from '../services/api';
+import { User } from '../types/user';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
-  updateProfile: (data: Partial<User>) => Promise<void>;
+  updateUser: (data: Partial<User>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,10 +22,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const userData = await auth.getMe();
+          const userData = await auth.me();
           setUser(userData);
         } catch (error) {
           localStorage.removeItem('token');
+          setUser(null);
         }
       }
       setLoading(false);
@@ -35,15 +36,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string) => {
-    const { user, token } = await auth.login(email, password);
+    const { token, user: userData } = await auth.login(email, password);
     localStorage.setItem('token', token);
-    setUser(user);
+    setUser(userData);
   };
 
-  const register = async (email: string, password: string, name: string) => {
-    const { user, token } = await auth.register(email, password, name);
+  const register = async (name: string, email: string, password: string) => {
+    const { token, user: userData } = await auth.register(name, email, password);
     localStorage.setItem('token', token);
-    setUser(user);
+    setUser(userData);
   };
 
   const logout = () => {
@@ -51,15 +52,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
-  const updateProfile = async (data: Partial<User>) => {
-    const updatedUser = await auth.updateProfile(data);
+  const updateUser = async (data: Partial<User>) => {
+    const updatedUser = await auth.update(data);
     setUser(updatedUser);
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, loading, login, register, logout, updateProfile }}
-    >
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
