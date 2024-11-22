@@ -135,7 +135,7 @@ export const NotificationProvider: React.FC<{
         addNotification(
           '실시간 알림 연결이 끊어졌습니다. 페이지를 새로고침해주세요.',
           'warning',
-          null
+          undefined
         );
       }
     };
