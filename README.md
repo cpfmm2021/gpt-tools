@@ -1,46 +1,87 @@
-# Getting Started with Create React App
+# GPT Tools Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+GPT 기반의 다양한 AI 도구들을 손쉽게 사용할 수 있는 웹 플랫폼입니다.
 
-## Available Scripts
+## 주요 기능
 
-In the project directory, you can run:
+- 사용자 인증 (로그인/회원가입)
+- 다양한 AI 도구 제공
+- 실시간 알림
+- 반응형 디자인
+- 다국어 지원 (한국어/영어)
+- 사용자 프로필 관리
+- 관리자 대시보드
 
-### `npm start`
+## 기술 스택
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React 18.3.1
+- TypeScript 4.9.5
+- Material-UI 5.15.14
+- React Query 3.39.3
+- React Router 6.28.0
+- i18next
+- WebSocket
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 시작하기
 
-### `npm test`
+### 필요 조건
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js 16.x 이상
+- npm 또는 yarn
 
-### `npm run build`
+### 설치
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# 저장소 클론
+git clone [your-repository-url]
+cd gpt-tools/client
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 의존성 설치
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 개발 서버 실행
+npm start
+```
 
-### `npm run eject`
+### 환경 변수 설정
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`.env` 파일을 생성하고 다음 변수들을 설정하세요:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```env
+REACT_APP_API_URL=http://localhost:3001/api
+REACT_APP_WS_URL=ws://localhost:3001/ws
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 개발 모드
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+개발 모드에서는 백엔드 서버 없이도 기본적인 기능을 테스트할 수 있습니다:
 
-## Learn More
+- 더미 데이터를 사용한 도구 목록 표시
+- 기본적인 UI/UX 테스트 가능
+- 실시간 코드 수정 및 확인
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 프로젝트 구조
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+src/
+├── components/     # 재사용 가능한 컴포넌트
+├── contexts/       # React Context 정의
+├── hooks/         # 커스텀 훅
+├── pages/         # 페이지 컴포넌트
+├── services/      # API 서비스
+├── types/         # TypeScript 타입 정의
+├── utils/         # 유틸리티 함수
+└── i18n/          # 다국어 리소스
+```
+
+## 기여하기
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 라이선스
+
+이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
